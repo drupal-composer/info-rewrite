@@ -1,0 +1,18 @@
+{
+    "name": "jhedstrom/composer-drupal-info",
+    "description": "Writes out version information to the .info.yml files for Drupal projects.",
+    "type": "composer-plugin",
+    "require": {
+        "composer-plugin-api": "^1.1"
+    },
+    "require-dev": {
+        "composer/composer": "~1.0",
+        "phpunit/phpunit": "~5.6"
+    },
+    "autoload": {
+        "psr-4": {"jhedstrom\\Composer\\": "src"}
+    },
+    "autoload-dev": {
+        "psr-4": {"jhedstrom\\Composer\\Tests\\": "tests"}
+    }
+}
