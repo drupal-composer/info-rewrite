@@ -3,6 +3,9 @@
 namespace jhedstrom\Composer;
 
 use Composer\Composer;
+use Composer\DependencyResolver\Operation\InstallOperation;
+use Composer\DependencyResolver\Operation\OperationInterface;
+use Composer\DependencyResolver\Operation\UpdateOperation;
 use Composer\EventDispatcher\EventDispatcher;
 use Composer\EventDispatcher\EventSubscriberInterface;
 use Composer\Installer\PackageEvent;
@@ -11,8 +14,8 @@ use Composer\IO\IOInterface;
 use Composer\Plugin\PluginInterface;
 use Composer\Util\ProcessExecutor;
 
-class DrupalInfo implements PluginInterface, EventSubscriberInterface {
-
+class DrupalInfo implements PluginInterface, EventSubscriberInterface
+{
     /**
      * @var Composer $composer
      */
@@ -60,7 +63,26 @@ class DrupalInfo implements PluginInterface, EventSubscriberInterface {
      */
     public function writeInfoFiles(PackageEvent $event)
     {
-
+        $operation = $event->getOperation();
+        $package = $this->getPackageFromOperation($operation);
     }
 
+    /**
+     * Gather the package from the given operation.
+     *
+     * @param OperationInterface $operation
+     * @return \Composer\Package\PackageInterface
+     * @throws \Exception
+     */
+    protected function getPackageFromOperation(OperationInterface $operation)
+    {
+        if ($operation instanceof InstallOperation) {
+            $package = $operation->getPackage();
+        } elseif ($operation instanceof UpdateOperation) {
+            $package = $operation->getTargetPackage();
+        } else {
+            throw new \Exception('Unknown operation: ' . get_class($operation));
+        }
+        return $package;
+    }
 }

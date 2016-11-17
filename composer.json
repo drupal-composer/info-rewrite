@@ -7,12 +7,22 @@
     },
     "require-dev": {
         "composer/composer": "~1.0",
-        "phpunit/phpunit": "~5.6"
+        "jakub-onderka/php-parallel-lint": "~0.8",
+        "phpunit/phpunit": "~5.6",
+        "squizlabs/php_codesniffer": "~2.0"
     },
     "autoload": {
         "psr-4": {"jhedstrom\\Composer\\": "src"}
     },
     "autoload-dev": {
         "psr-4": {"jhedstrom\\Composer\\Tests\\": "tests"}
+    },
+    "scripts": {
+        "test": [
+            "composer validate --no-interaction",
+            "parallel-lint src tests",
+            "phpunit --log-junit=reports/unitreport.xml --coverage-text --coverage-html=reports/coverage --coverage-clover=reports/coverage.xml",
+            "phpcs --encoding=utf-8 --standard=PSR2 --report-checkstyle=reports/checkstyle-phpcs.xml --report-full --extensions=php src/* tests/*"
+        ]
     }
 }
