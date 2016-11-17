@@ -11,6 +11,7 @@ use Composer\EventDispatcher\EventSubscriberInterface;
 use Composer\Installer\PackageEvent;
 use Composer\Installer\PackageEvents;
 use Composer\IO\IOInterface;
+use Composer\Package\PackageInterface;
 use Composer\Plugin\PluginInterface;
 use Composer\Util\ProcessExecutor;
 
@@ -32,9 +33,14 @@ class DrupalInfo implements PluginInterface, EventSubscriberInterface
     protected $eventDispatcher;
 
     /**
-     * @var ProcessExecutor $executor
+     * Package types to process.
      */
-    protected $executor;
+    const PACKAGE_TYPES = [
+        'drupal-core',
+        'drupal-module',
+        'drupal-profile',
+        'drupal-theme',
+    ];
 
     /**
      * {@inheritdoc}
@@ -65,6 +71,24 @@ class DrupalInfo implements PluginInterface, EventSubscriberInterface
     {
         $operation = $event->getOperation();
         $package = $this->getPackageFromOperation($operation);
+        if (!$this->processPackage($package)) {
+            if ($this->io->isVerbose()) {
+                $this->io->write('<info>Not writing info files for ' . $package->getPrettyName() . ' as it is of type '
+                    . $package->getType() . '</info>');
+            }
+            return;
+        }
+    }
+
+    /**
+     * Determine if this package should be processed.
+     *
+     * @param PackageInterface $package
+     * @return bool
+     */
+    protected function processPackage(PackageInterface $package)
+    {
+        return in_array($package->getType(), static::PACKAGE_TYPES);
     }
 
     /**
