@@ -14,7 +14,7 @@ class Factory
     /**
      * A mapping of patterns to the appropriate write.
      */
-    const INFO_MAPPING = [
+    protected static $infoMapping = [
         '/^.+\.info\.yml$/i' => Drupal::class,
         '/^.+\.info$/i' => Drupal7::class,
     ];
@@ -40,7 +40,7 @@ class Factory
      */
     protected function scan()
     {
-        foreach (static::INFO_MAPPING as $pattern => $class) {
+        foreach (static::$infoMapping as $pattern => $class) {
             $fileIterator = new RegexIterator(
                 new RecursiveIteratorIterator(
                     new RecursiveDirectoryIterator($this->path)
