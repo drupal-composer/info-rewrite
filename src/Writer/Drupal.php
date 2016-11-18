@@ -1,6 +1,6 @@
 <?php
 
-namespace jhedstrom\Composer\Writer;
+namespace DrupalComposer\Composer\Writer;
 
 /**
  * Drupal 8+ .info file writer.

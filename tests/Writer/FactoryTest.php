@@ -1,14 +1,14 @@
 <?php
 
-namespace jhedstrom\Composer\Tests\Writer;
+namespace DrupalComposer\Composer\Tests\Writer;
 
-use jhedstrom\Composer\Tests\InfoFileTrait;
-use jhedstrom\Composer\Writer\Drupal;
-use jhedstrom\Composer\Writer\Drupal7;
-use jhedstrom\Composer\Writer\Factory;
+use DrupalComposer\Composer\Tests\InfoFileTrait;
+use DrupalComposer\Composer\Writer\Drupal;
+use DrupalComposer\Composer\Writer\Drupal7;
+use DrupalComposer\Composer\Writer\Factory;
 
 /**
- * @coversDefaultClass \jhedstrom\Composer\Writer\Factory
+ * @coversDefaultClass \DrupalComposer\Composer\Writer\Factory
  */
 class FactoryTest extends \PHPUnit_Framework_TestCase
 {

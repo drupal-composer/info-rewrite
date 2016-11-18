@@ -1,6 +1,6 @@
 <?php
 
-namespace jhedstrom\Composer;
+namespace DrupalComposer\Composer;
 
 use Composer\Composer;
 use Composer\DependencyResolver\Operation\InstallOperation;

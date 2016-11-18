@@ -1,6 +1,6 @@
 <?php
 
-namespace jhedstrom\Composer\Tests;
+namespace DrupalComposer\Composer\Tests;
 
 use org\bovigo\vfs\vfsStream;
 

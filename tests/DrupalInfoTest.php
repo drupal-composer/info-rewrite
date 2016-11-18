@@ -1,6 +1,6 @@
 <?php
 
-namespace jhedstrom\Composer\Tests;
+namespace DrupalComposer\Composer\Tests;
 
 use Composer\Composer;
 use Composer\DependencyResolver\Operation\InstallOperation;
@@ -10,10 +10,10 @@ use Composer\Installer\PackageEvent;
 use Composer\Installer\PackageEvents;
 use Composer\IO\IOInterface;
 use Composer\Package\PackageInterface;
-use jhedstrom\Composer\DrupalInfo;
+use DrupalComposer\Composer\DrupalInfo;
 
 /**
- * @coversDefaultClass \jhedstrom\Composer\DrupalInfo
+ * @coversDefaultClass \DrupalComposer\Composer\DrupalInfo
  */
 class DrupalInfoTest extends \PHPUnit_Framework_TestCase
 {
