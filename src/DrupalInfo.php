@@ -73,17 +73,32 @@ class DrupalInfo implements PluginInterface, EventSubscriberInterface
         $package = $this->getPackageFromOperation($operation);
         if (!$this->processPackage($package)) {
             if ($this->io->isVerbose()) {
-                $this->io->write('<info>Not writing info files for ' . $package->getPrettyName() . ' as it is of type '
-                    . $package->getType() . '</info>');
+                $this->io->write(
+                    '<info>Not writing info files for ' . $package->getPrettyName() . ' as it is of type '
+                    . $package->getType() . '</info>'
+                );
             }
             return;
         }
+        $this->doWriteInfoFiles($event, $package);
+    }
+
+    /**
+     * Do the info file re-writing.
+     *
+     * @param PackageInterface $package
+     */
+    protected function doWriteInfoFiles(PackageInterface $package)
+    {
+        // Get the install path from the package object.
+        $manager = $this->composer->getInstallationManager();
+        $install_path = $manager->getInstaller($package->getType())->getInstallPath($package);
     }
 
     /**
      * Determine if this package should be processed.
      *
-     * @param PackageInterface $package
+     * @param  PackageInterface $package
      * @return bool
      */
     protected function processPackage(PackageInterface $package)
@@ -94,7 +109,7 @@ class DrupalInfo implements PluginInterface, EventSubscriberInterface
     /**
      * Gather the package from the given operation.
      *
-     * @param OperationInterface $operation
+     * @param  OperationInterface $operation
      * @return \Composer\Package\PackageInterface
      * @throws \Exception
      */
