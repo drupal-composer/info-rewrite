@@ -14,6 +14,7 @@ use Composer\IO\IOInterface;
 use Composer\Package\PackageInterface;
 use Composer\Plugin\PluginInterface;
 use Composer\Util\ProcessExecutor;
+use DrupalComposer\Composer\Writer\Factory;
 
 class DrupalInfo implements PluginInterface, EventSubscriberInterface
 {
@@ -93,6 +94,9 @@ class DrupalInfo implements PluginInterface, EventSubscriberInterface
         // Get the install path from the package object.
         $manager = $this->composer->getInstallationManager();
         $install_path = $manager->getInstaller($package->getType())->getInstallPath($package);
+        $factory = new Factory($install_path);
+        $writer = $factory->get();
+        $writer->rewrite($package->getVersion());
     }
 
     /**

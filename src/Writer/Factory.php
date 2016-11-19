@@ -29,6 +29,8 @@ class Factory
 
     /**
      * Return the writer plugin.
+     *
+     * @return \DrupalComposer\Composer\Writer\WriterInterface
      */
     public function get()
     {
