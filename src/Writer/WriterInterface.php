@@ -23,4 +23,9 @@ interface WriterInterface
      * @return
      */
     public function rewrite($version, $timestamp);
+
+    /**
+     * Rollback the info files to their download/unprocessed state.
+     */
+    public function rollback();
 }

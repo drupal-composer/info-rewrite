@@ -13,6 +13,8 @@ use Composer\Installer\PackageEvents;
 use Composer\IO\IOInterface;
 use Composer\Package\PackageInterface;
 use Composer\Plugin\PluginInterface;
+use Composer\Script\Event;
+use Composer\Script\ScriptEvents;
 use DrupalComposer\Composer\Writer\Factory;
 
 class DrupalInfo implements PluginInterface, EventSubscriberInterface
@@ -56,8 +58,14 @@ class DrupalInfo implements PluginInterface, EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
+        // Pre-install/update events for rolling back the rewrite to avoid prompts for changed files.
+        $events[ScriptEvents::PRE_INSTALL_CMD] = 'rollbackRewrite';
+        $events[ScriptEvents::PRE_UPDATE_CMD] = 'rollbackRewrite';
+
+        // Events for performing the re-writing of info files.
         $events[PackageEvents::POST_PACKAGE_INSTALL] = ['writeInfoFiles', 50];
         $events[PackageEvents::POST_PACKAGE_UPDATE] = ['writeInfoFiles', 50];
+
         return $events;
     }
 
@@ -84,18 +92,59 @@ class DrupalInfo implements PluginInterface, EventSubscriberInterface
     }
 
     /**
+     * Remove the info file rewriting.
+     */
+    public function rollbackRewrite(Event $event)
+    {
+        $packages = $this->composer->getRepositoryManager()->getLocalRepository()->getPackages();
+        foreach ($packages as $package) {
+            if (!$this->processPackage($package)) {
+                if ($this->io->isVerbose()) {
+                    $this->io->write(
+                        '<info>Not rollinback info files for ' . $package->getPrettyName() . ' as it is of type '
+                        . $package->getType() . '</info>'
+                    );
+                }
+                continue;
+            }
+
+            $this->doRollback($package);
+        }
+    }
+
+    /**
      * Do the info file re-writing.
      *
      * @param PackageInterface $package
      */
     protected function doWriteInfoFiles(PackageInterface $package)
     {
+        $writer = $this->getWriter($package);
+        $writer->rewrite($this->findVersion($package), $this->findTimestamp($package));
+    }
+
+    /**
+     * Process an info file rollback for a given package.
+     * @param PackageInterface $package
+     */
+    protected function doRollback(PackageInterface $package)
+    {
+        $writer = $this->getWriter($package);
+        $writer->rollback();
+    }
+
+    /**
+     * Get the writer service.
+     * @param PackageInterface $package
+     * @return Writer\WriterInterface
+     */
+    protected function getWriter(PackageInterface $package)
+    {
         // Get the install path from the package object.
         $manager = $this->composer->getInstallationManager();
         $install_path = $manager->getInstaller($package->getType())->getInstallPath($package);
         $factory = new Factory($install_path);
-        $writer = $factory->get();
-        $writer->rewrite($this->findVersion($package), $this->findTimestamp($package));
+        return $factory->get();
     }
 
     /**
