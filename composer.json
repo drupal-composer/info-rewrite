@@ -10,7 +10,10 @@
         }
     ],
     "extra": {
-        "class": "DrupalComposer\\Composer\\DrupalInfo"
+        "class": "DrupalComposer\\Composer\\DrupalInfo",
+        "branch-alias": {
+            "dev-master": "1.0.x-dev"
+        }
     },
     "require": {
         "composer-plugin-api": "^1.1"
