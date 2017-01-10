@@ -56,7 +56,7 @@ trait InfoFileTrait
     /**
      * Get directory names for a given version.
      */
-    public function getDirectory($version = 'drupal8')
+    public function getDirectory($version = 'drupal')
     {
         return vfsStream::url('modules/' . $version);
     }

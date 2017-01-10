@@ -52,7 +52,7 @@ class Factory
             );
             $infoFiles = [];
             foreach ($fileIterator as $found) {
-                $infoFiles[] = $found->getRealPath();
+                $infoFiles[] = $found->getPathname();
             }
             if (!empty($infoFiles)) {
                 $writer = new $class();
