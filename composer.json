@@ -9,6 +9,9 @@
             "email": "jhedstrom@gmail.com"
         }
     ],
+    "extra": {
+        "class": "DrupalComposer\\Composer\\DrupalInfo"
+    },
     "require": {
         "composer-plugin-api": "^1.1"
     },
