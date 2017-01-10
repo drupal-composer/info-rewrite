@@ -39,7 +39,7 @@ class Drupal implements WriterInterface
      */
     protected function formatInfo($version, $timestamp)
     {
-        $date = date('c', $timestamp);
+        $date = gmdate('c', $timestamp);
         $info = <<<EOL
 
 # Information added by drupal-composer/info-rewrite on $date.
