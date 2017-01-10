@@ -15,10 +15,12 @@ interface WriterInterface
     public function set(array $paths);
 
     /**
-     * Rewrites the .info files with the provided version.
+     * Rewrites the .info files with the provided version and timestamp.
      *
-     * @param string $version
+     * @param  string $version
      *   Version information to write out.
+     * @param  string $timestamp
+     * @return
      */
-    public function rewrite($version);
+    public function rewrite($version, $timestamp);
 }

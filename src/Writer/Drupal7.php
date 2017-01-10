@@ -5,19 +5,19 @@ namespace DrupalComposer\Composer\Writer;
 /**
  * Drupal 7 .info file writer.
  */
-class Drupal7 implements WriterInterface
+class Drupal7 extends Drupal
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function set(array $paths)
-    {
-    }
 
     /**
-     * {@inheritdoc}
+     * Format version and timestamp into INI format.
      */
-    public function rewrite($version)
+    protected function formatInfo($version, $timestamp)
     {
+        $date = date('c', $timestamp);
+        $info = <<<EOL
+; Information added by drupal-composer/info-rewrite on $date.
+version = "$version"
+timestamp = "$timestamp"
+EOL;
     }
 }
