@@ -35,6 +35,19 @@ class Drupal implements WriterInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function rollback()
+    {
+        $pattern = '# Information added by drupal-composer/info-rewrite on';
+        foreach ($this->paths as $info_file) {
+            $contents = file_get_contents($info_file);
+            $parts = explode($pattern, $contents);
+            file_put_contents($info_file, trim($parts[0]) . "\n");
+        }
+    }
+
+    /**
      * Format version and timestamp into YAML.
      */
     protected function formatInfo($version, $timestamp)

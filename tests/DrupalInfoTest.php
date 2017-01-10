@@ -12,6 +12,9 @@ use Composer\Installer\PackageEvent;
 use Composer\Installer\PackageEvents;
 use Composer\IO\IOInterface;
 use Composer\Package\PackageInterface;
+use Composer\Repository\RepositoryManager;
+use Composer\Repository\WritableRepositoryInterface;
+use Composer\Script\Event;
 use DrupalComposer\Composer\DrupalInfo;
 
 /**
@@ -158,5 +161,67 @@ EOL;
         $operation->getPackage()->willReturn($package->reveal());
         $event->getOperation()->willReturn($operation->reveal());
         $this->fixture->writeInfoFiles($event->reveal());
+    }
+
+    /**
+     * @covers ::rollbackRewrite
+     */
+    public function testRollbackRewrite()
+    {
+        // Generate test files.
+        $this->generateDirectories();
+
+        // Add the .info file that will be removed.
+        $files = [
+            $this->getDirectory() . '/module_a/module_a.info.yml',
+            $this->getDirectory() . '/nested_module/nested_module.info.yml',
+            $this->getDirectory() . '/nested_module/modules/module_b/module_b.info.yml',
+        ];
+        $info_pattern = <<<EOL
+
+# Information added by drupal-composer/info-rewrite on 2001-01-02.
+version: 'foo-version'
+timestamp: 1234
+EOL;
+        foreach ($files as $file) {
+            $handle = fopen($file, 'a+');
+            fwrite($handle, $info_pattern);
+            fclose($handle);
+            $this->assertContains($info_pattern, file_get_contents($file));
+        }
+
+        $package = $this->prophesize(PackageInterface::class);
+        $package->getType()->willReturn('drupal-module');
+        $package = $package->reveal();
+        $packages = [$package];
+
+        $local_repository = $this->prophesize(WritableRepositoryInterface::class);
+        $local_repository->getPackages()->willReturn($packages);
+
+        $manager = $this->prophesize(RepositoryManager::class);
+        $manager->getLocalRepository()->willReturn($local_repository->reveal());
+
+        $installer = $this->prophesize(InstallerInterface::class);
+        $installer->getInstallPath($package)->willReturn($this->getDirectory());
+        $location_manager = $this->prophesize(InstallationManager::class);
+        $location_manager->getInstaller('drupal-module')->willReturn($installer->reveal());
+
+        $this->composer = $this->prophesize(Composer::class);
+        $this->composer->getRepositoryManager()->willReturn($manager->reveal());
+        $this->composer->getInstallationManager()->willReturn($location_manager->reveal());
+
+        $this->fixture->activate(
+            $this->composer->reveal(),
+            $this->io->reveal()
+        );
+
+        $event = $this->prophesize(Event::class);
+        $this->fixture->rollbackRewrite($event->reveal());
+
+        // Verify that 3 .info files are updated.
+        foreach ($files as $file) {
+            $contents = file_get_contents($file);
+            $this->assertNotContains($info_pattern, $contents);
+        }
     }
 }
