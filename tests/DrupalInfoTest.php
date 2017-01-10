@@ -112,7 +112,7 @@ class DrupalInfoTest extends \PHPUnit_Framework_TestCase
         $info = <<<EOL
 # Information added by drupal-composer/info-rewrite on 2009-02-13T23:31:30+00:00.
 version: 'foo-x+5'
-timestamp: 123
+datestamp: 123
 EOL;
 
         foreach ($files as $file) {
