@@ -6,12 +6,11 @@ use DrupalComposer\Composer\Tests\InfoFileTrait;
 use DrupalComposer\Composer\Writer\Drupal;
 use DrupalComposer\Composer\Writer\Drupal7;
 use DrupalComposer\Composer\Writer\Factory;
-use PHPUnit\Framework\TestCase;
 
 /**
  * @coversDefaultClass \DrupalComposer\Composer\Writer\Factory
  */
-class FactoryTest extends TestCase
+class FactoryTest extends \PHPUnit_Framework_TestCase
 {
     use InfoFileTrait;
 

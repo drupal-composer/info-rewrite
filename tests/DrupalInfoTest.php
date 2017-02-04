@@ -16,12 +16,11 @@ use Composer\Repository\RepositoryManager;
 use Composer\Repository\WritableRepositoryInterface;
 use Composer\Script\Event;
 use DrupalComposer\Composer\DrupalInfo;
-use PHPUnit\Framework\TestCase;
 
 /**
  * @coversDefaultClass \DrupalComposer\Composer\DrupalInfo
  */
-class DrupalInfoTest extends TestCase
+class DrupalInfoTest extends \PHPUnit_Framework_TestCase
 {
     use InfoFileTrait;
 
