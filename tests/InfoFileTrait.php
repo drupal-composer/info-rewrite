@@ -31,6 +31,9 @@ trait InfoFileTrait
                         ],
                     ],
                 ],
+                'module_with_version' => [
+                    'module_with_version.info.yml' => "name: module with version\nversion:8.x-1.0-alpha4",
+                ],
             ],
             // Drupal 7.
             'drupal7' => [
@@ -47,6 +50,9 @@ trait InfoFileTrait
                             'module_b.info' => 'name = module_b',
                         ],
                     ],
+                ],
+                'module_with_version' => [
+                    'module_with_version.info' => "name = module with version\nversion = 8.x-1.0-alpha4",
                 ],
             ],
 

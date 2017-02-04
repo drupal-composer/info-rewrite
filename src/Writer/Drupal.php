@@ -8,6 +8,11 @@ namespace DrupalComposer\Composer\Writer;
 class Drupal implements WriterInterface
 {
     /**
+     * Pattern to indicate a file already has version info.
+     */
+    const VERSION_EXISTS_PATTERN = '#version:.*[\d+].*#';
+
+    /**
      * File paths to rewrite.
      *
      * @var string[]
@@ -28,9 +33,12 @@ class Drupal implements WriterInterface
     public function rewrite($version, $timestamp)
     {
         foreach ($this->paths as $info_file) {
-            $file = fopen($info_file, 'a+');
-            fwrite($file, $this->formatInfo($version, $timestamp));
-            fclose($file);
+            // Don't write to files that already contain version information.
+            if (!$this->hasVersionInfo($info_file)) {
+                $file = fopen($info_file, 'a+');
+                fwrite($file, $this->formatInfo($version, $timestamp));
+                fclose($file);
+            }
         }
     }
 
@@ -60,5 +68,20 @@ version: '$version'
 datestamp: $timestamp
 EOL;
         return $info;
+    }
+
+    /**
+     * Determine if a given file already contains version info.
+     *
+     * @param string $file_path
+     *   Path to the info file.
+     *
+     * @return bool
+     *   Returns true if file already has version info.
+     */
+    protected function hasVersionInfo($file_path)
+    {
+        $contents = file_get_contents($file_path);
+        return preg_match(static::VERSION_EXISTS_PATTERN, $contents);
     }
 }

@@ -7,6 +7,10 @@ namespace DrupalComposer\Composer\Writer;
  */
 class Drupal7 extends Drupal
 {
+    /**
+     * {@inheritdoc}
+     */
+    const VERSION_EXISTS_PATTERN = '#version=.*[\d+].*#';
 
     /**
      * Format version and timestamp into INI format.

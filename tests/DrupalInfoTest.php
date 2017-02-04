@@ -119,6 +119,11 @@ EOL;
             $this->assertFileExists($file);
             $this->assertContains($info, file_get_contents($file));
         }
+
+        // Verify that module with existing version information is not updated.
+        $file = $this->getDirectory() . '/module_with_version/module_with_version.info.yml';
+        $this->assertFileExists($file);
+        $this->assertNotContains($info, file_get_contents($file));
     }
 
     /**
