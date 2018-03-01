@@ -157,6 +157,34 @@ EOL;
     /**
      * @covers ::writeInfoFiles
      */
+    public function testNoInfoFile()
+    {
+        $package = $this->prophesize(PackageInterface::class);
+        $package->getType()->willReturn('drupal-module');
+        $package->getPrettyName()->willReturn('foo');
+        $package = $package->reveal();
+        $installer = $this->prophesize(InstallerInterface::class);
+        $installer->getInstallPath($package)->willReturn($this->getDirectory('drush'));
+        $manager = $this->prophesize(InstallationManager::class);
+        $manager->getInstaller('drupal-module')->willReturn($installer->reveal());
+        $this->composer = $this->prophesize(Composer::class);
+        $this->composer->getInstallationManager()->willReturn($manager->reveal());
+        $this->io->write('<info>No info files found for foo</info>')->shouldBeCalled();
+        $this->io->isVerbose()->willReturn(true);
+        $this->fixture->activate(
+            $this->composer->reveal(),
+            $this->io->reveal()
+        );
+        $event = $this->prophesize(PackageEvent::class);
+        $operation = $this->prophesize(InstallOperation::class);
+        $operation->getPackage()->willReturn($package);
+        $event->getOperation()->willReturn($operation->reveal());
+        $this->fixture->writeInfoFiles($event->reveal());
+    }
+
+    /**
+     * @covers ::writeInfoFiles
+     */
     public function testIgnoredPackageType()
     {
         $event = $this->prophesize(PackageEvent::class);

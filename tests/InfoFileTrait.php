@@ -55,7 +55,12 @@ trait InfoFileTrait
                     'module_with_version.info' => "name = module with version\nversion = 8.x-1.0-alpha4",
                 ],
             ],
-
+            // Drush with no info file.
+            'drush' => [
+                'drush_module_with_no_info' => [
+                    'drush_module_with_no_info.drush.inc' => 'foo',
+                ],
+            ],
         ]);
     }
 

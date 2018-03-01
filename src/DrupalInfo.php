@@ -119,8 +119,13 @@ class DrupalInfo implements PluginInterface, EventSubscriberInterface
      */
     protected function doWriteInfoFiles(PackageInterface $package)
     {
-        $writer = $this->getWriter($package);
-        $writer->rewrite($this->findVersion($package), $this->findTimestamp($package));
+        if ($writer = $this->getWriter($package)) {
+            $writer->rewrite($this->findVersion($package), $this->findTimestamp($package));
+        } elseif ($this->io->isVerbose()) {
+            $this->io->write(
+                '<info>No info files found for ' .$package->getPrettyName() . '</info>'
+            );
+        }
     }
 
     /**
