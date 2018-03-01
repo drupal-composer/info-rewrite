@@ -166,8 +166,9 @@ class DrupalInfo implements PluginInterface, EventSubscriberInterface
             return $extra['drupal']['version'];
         }
 
-        // Default to package version.
-        return $package->getVersion();
+        // Default to package pretty version.
+        // The normal version has 4 digits for some reason.
+        return $package->getPrettyVersion();
     }
 
     /**
