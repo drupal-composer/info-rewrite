@@ -23,5 +23,6 @@ class Drupal7 extends Drupal
 version = "$version"
 timestamp = "$timestamp"
 EOL;
+        return $info;
     }
 }
