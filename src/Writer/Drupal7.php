@@ -21,7 +21,7 @@ class Drupal7 extends Drupal
         $info = <<<EOL
 ; Information added by drupal-composer/info-rewrite on $date.
 version = "$version"
-timestamp = "$timestamp"
+datestamp = "$timestamp"
 EOL;
         return $info;
     }
