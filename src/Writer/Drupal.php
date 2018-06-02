@@ -53,11 +53,11 @@ class Drupal implements WriterInterface
      */
     public function rollback()
     {
-        $pattern = '# Information added by drupal-composer/info-rewrite; date of revision:';
+        $pattern = "\n# Information added by drupal-composer/info-rewrite; date of revision:";
         foreach ($this->paths as $info_file) {
             $contents = file_get_contents($info_file);
             $parts = explode($pattern, $contents);
-            file_put_contents($info_file, trim($parts[0]) . "\n");
+            file_put_contents($info_file, $parts[0]);
         }
     }
 
