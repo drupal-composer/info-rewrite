@@ -19,6 +19,7 @@ class Drupal7 extends Drupal
     {
         $date = gmdate('c', $timestamp);
         $info = <<<EOL
+
 ; Information added by drupal-composer/info-rewrite on $date.
 version = "$version"
 datestamp = "$timestamp"
