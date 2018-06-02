@@ -35,8 +35,9 @@ class Drupal implements WriterInterface
         foreach ($this->paths as $info_file) {
             // Don't write to files that already contain version information.
             if (!$this->hasVersionInfo($info_file)) {
+                $project = basename(dirname($info_file));
                 $file = fopen($info_file, 'a+');
-                fwrite($file, $this->formatInfo($version, $timestamp));
+                fwrite($file, $this->formatInfo($version, $timestamp, $project));
                 fclose($file);
             }
         }
@@ -58,7 +59,7 @@ class Drupal implements WriterInterface
     /**
      * Format version and timestamp into YAML.
      */
-    protected function formatInfo($version, $timestamp)
+    protected function formatInfo($version, $timestamp, $project)
     {
         $date = gmdate('c', $timestamp);
         $info = <<<EOL
@@ -66,6 +67,7 @@ class Drupal implements WriterInterface
 # Information added by drupal-composer/info-rewrite on $date.
 version: '$version'
 datestamp: $timestamp
+project: '$project'
 EOL;
         return $info;
     }

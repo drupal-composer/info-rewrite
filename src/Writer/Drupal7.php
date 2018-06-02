@@ -15,13 +15,14 @@ class Drupal7 extends Drupal
     /**
      * Format version and timestamp into INI format.
      */
-    protected function formatInfo($version, $timestamp)
+    protected function formatInfo($version, $timestamp, $project)
     {
         $date = gmdate('c', $timestamp);
         $info = <<<EOL
 ; Information added by drupal-composer/info-rewrite on $date.
 version = "$version"
 datestamp = "$timestamp"
+project = "$project"
 EOL;
         return $info;
     }
