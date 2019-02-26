@@ -66,6 +66,7 @@ class Drupal implements WriterInterface
 # Information added by drupal-composer/info-rewrite on $date.
 version: '$version'
 datestamp: $timestamp
+
 EOL;
         return $info;
     }
