@@ -52,9 +52,12 @@ class DrupalInfo implements PluginInterface, EventSubscriberInterface
         $this->composer = $composer;
         $this->io = $io;
 
-        $additionalPackageTypes = $this->composer->getConfig()->get('drupal-info-rewrite--additional-packageTypes');
-        if (is_array($additionalPackageTypes)) {
-            $this->packageTypes = array_merge($this->packageTypes, $additionalPackageTypes);
+        $config = $this->composer->getConfig();
+        if ($config) {
+            $additionalPackageTypes = $config->get('drupal-info-rewrite--additional-packageTypes');
+            if (is_array($additionalPackageTypes)) {
+                $this->packageTypes = array_merge($this->packageTypes, $additionalPackageTypes);
+            }
         }
     }
 
