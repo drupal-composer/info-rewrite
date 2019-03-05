@@ -37,7 +37,7 @@ class DrupalInfo implements PluginInterface, EventSubscriberInterface
     /**
      * Package types to process.
      */
-    protected static $packageTypes = [
+    protected $packageTypes = [
         'drupal-core',
         'drupal-module',
         'drupal-profile',
@@ -203,7 +203,7 @@ class DrupalInfo implements PluginInterface, EventSubscriberInterface
      */
     protected function processPackage(PackageInterface $package)
     {
-        return in_array($package->getType(), static::$packageTypes);
+        return in_array($package->getType(), $this->packageTypes);
     }
 
     /**
