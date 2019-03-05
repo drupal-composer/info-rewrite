@@ -61,14 +61,16 @@ class Drupal implements WriterInterface
     protected function formatInfo($version, $timestamp)
     {
         $date = gmdate('c', $timestamp);
-        $info = <<<EOL
+        $info = array();
+        // Always start with EOL character.
+        $info[] = '';
+        $info[] = "# Information added by drupal-composer/info-rewrite on $date.";
+        $info[] = "version: '$version'";
+        $info[] = "datestamp: $timestamp";
+        // Always end with EOL character.
+        $info[] = '';
 
-# Information added by drupal-composer/info-rewrite on $date.
-version: '$version'
-datestamp: $timestamp
-
-EOL;
-        return $info;
+        return implode("\n", $info);
     }
 
     /**

@@ -18,11 +18,15 @@ class Drupal7 extends Drupal
     protected function formatInfo($version, $timestamp)
     {
         $date = gmdate('c', $timestamp);
-        $info = <<<EOL
-; Information added by drupal-composer/info-rewrite on $date.
-version = "$version"
-timestamp = "$timestamp"
+        $info = array();
+        // Always start with EOL character.
+        $info[] = '';
+        $info[] = "; Information added by drupal-composer/info-rewrite on $date.";
+        $info[] = "version = \"$version\"";
+        $info[] = "datestamp = \"$timestamp\"";
+        // Always end with EOL character.
+        $info[] = '';
 
-EOL;
+        return implode("\n", $info);
     }
 }
