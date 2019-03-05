@@ -12,3 +12,7 @@ This is only required when downloading projects that aren't full releases (for i
 ## Installation
 
 `composer require drupal-composer/info-rewrite:~1.0`
+
+## Configuration
+
+By default, this plugin only acts on packages of type `drupal-core`, `drupal-module`, `drupal-profile`, and `drupal-theme` (see DrupalInfo::$packageTypes). You can add additional package types in your `composer.json` file. Add to the `config` array an entry with key `drupal-info-rewrite--additional-packageTypes` and make its value be an array of strings which are the additional types you would like to add.
