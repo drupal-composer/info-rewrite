@@ -120,7 +120,12 @@ class DrupalInfo implements PluginInterface, EventSubscriberInterface
     protected function doWriteInfoFiles(PackageInterface $package)
     {
         if ($writer = $this->getWriter($package)) {
-            $writer->rewrite($this->findVersion($package), $this->findTimestamp($package));
+            $writer->rewrite(
+                $this->findVersion($package),
+                $this->findTimestamp($package),
+                $this->findCore($package),
+                $this->findPackage($package)
+            );
         } elseif ($this->io->isVerbose()) {
             $this->io->write(
                 '<info>No info files found for ' .$package->getPrettyName() . '</info>'
@@ -193,6 +198,46 @@ class DrupalInfo implements PluginInterface, EventSubscriberInterface
 
         // Last resort, use current time.
         return time();
+    }
+
+    /**
+     * Find the Drupal core version this package is for.
+     *
+     * @param PackageInterface $package
+     *
+     * @return string|null
+     *   Drupal core version, such as "8.x". NULL if unable to determine.
+     */
+    protected function findCore(PackageInterface $package)
+    {
+        // Attempt to determine from getExtra().
+        $extra = $package->getExtra();
+        if (isset($extra['drupal']['core'])) {
+            return $extra['drupal']['core'];
+        }
+
+        // Attempt to determine from version number.
+        $version = $this->findVersion($package);
+        if (preg_match('/^(\d+\.x)-/', $version, $backref)) {
+            return $backref[1];
+        }
+    }
+
+    /**
+     * Find the name of the packge.
+     *
+     * @param PackageInterface $package
+     *
+     * @return string|null
+     *   The package name. NULL if unable to determine.
+     */
+    protected function findPackage(PackageInterface $package)
+    {
+        // Attempt to determine from getExtra().
+        $extra = $package->getExtra();
+        if (isset($extra['drupal']['package'])) {
+            return $extra['drupal']['package'];
+        }
     }
 
     /**

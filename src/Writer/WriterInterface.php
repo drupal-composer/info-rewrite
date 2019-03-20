@@ -22,7 +22,7 @@ interface WriterInterface
      * @param  string $timestamp
      * @return
      */
-    public function rewrite($version, $timestamp);
+    public function rewrite($version, $timestamp, $core = null, $project = null);
 
     /**
      * Rollback the info files to their download/unprocessed state.

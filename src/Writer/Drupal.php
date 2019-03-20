@@ -30,13 +30,13 @@ class Drupal implements WriterInterface
     /**
      * {@inheritdoc}
      */
-    public function rewrite($version, $timestamp)
+    public function rewrite($version, $timestamp, $core = null, $project = null)
     {
         foreach ($this->paths as $info_file) {
             // Don't write to files that already contain version information.
             if (!$this->hasVersionInfo($info_file)) {
                 $file = fopen($info_file, 'a+');
-                fwrite($file, $this->formatInfo($version, $timestamp));
+                fwrite($file, $this->formatInfo($version, $timestamp, $core, $project));
                 fclose($file);
             }
         }
@@ -58,17 +58,25 @@ class Drupal implements WriterInterface
     /**
      * Format version and timestamp into YAML.
      */
-    protected function formatInfo($version, $timestamp)
+    protected function formatInfo($version, $timestamp, $core = null, $project = null)
     {
         $date = gmdate('c', $timestamp);
-        $info = <<<EOL
+        $info = array();
+        // Always start with EOL character.
+        $info[] = '';
+        $info[] = "# Information added by drupal-composer/info-rewrite on $date.";
+        $info[] = "version: '$version'";
+        if ($core) {
+            $info[] = "core: '$core'";
+        }
+        if ($project) {
+            $info[] = "project: '$project'";
+        }
+        $info[] = "datestamp: $timestamp";
+        // Always end with EOL character.
+        $info[] = '';
 
-# Information added by drupal-composer/info-rewrite on $date.
-version: '$version'
-datestamp: $timestamp
-
-EOL;
-        return $info;
+        return implode("\n", $info);
     }
 
     /**
