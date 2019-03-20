@@ -91,6 +91,7 @@ class DrupalInfoTest extends \PHPUnit_Framework_TestCase
         $manager->getInstaller('drupal-module')->willReturn($installer->reveal());
         $this->composer = $this->prophesize(Composer::class);
         $this->composer->getInstallationManager()->willReturn($manager->reveal());
+        $this->composer->getConfig()->willReturn(null);
 
         $this->fixture->activate(
             $this->composer->reveal(),
@@ -169,6 +170,7 @@ EOL;
         $manager->getInstaller('drupal-module')->willReturn($installer->reveal());
         $this->composer = $this->prophesize(Composer::class);
         $this->composer->getInstallationManager()->willReturn($manager->reveal());
+        $this->composer->getConfig()->willReturn(null);
         $this->io->write('<info>No info files found for foo</info>')->shouldBeCalled();
         $this->io->isVerbose()->willReturn(true);
         $this->fixture->activate(
@@ -242,6 +244,7 @@ EOL;
         $this->composer = $this->prophesize(Composer::class);
         $this->composer->getRepositoryManager()->willReturn($manager->reveal());
         $this->composer->getInstallationManager()->willReturn($location_manager->reveal());
+        $this->composer->getConfig()->willReturn(null);
 
         $this->fixture->activate(
             $this->composer->reveal(),
