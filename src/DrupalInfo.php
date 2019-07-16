@@ -147,8 +147,13 @@ class DrupalInfo implements PluginInterface, EventSubscriberInterface
      */
     protected function doRollback(PackageInterface $package)
     {
-        $writer = $this->getWriter($package);
-        $writer->rollback();
+        if ($writer = $this->getWriter($package)) {
+            $writer->rollback();
+        } elseif ($this->io->isVerbose()) {
+            $this->io->write(
+                '<info>No info files found for ' .$package->getPrettyName() . '</info>'
+            );
+        }
     }
 
     /**

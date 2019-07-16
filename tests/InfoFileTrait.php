@@ -34,6 +34,9 @@ trait InfoFileTrait
                 'module_with_version' => [
                     'module_with_version.info.yml' => "name: module with version\nversion:8.x-1.0-alpha4",
                 ],
+                'module_missing_info' => [
+                    'README.md' => 'A README file.'
+                ],
             ],
             // Drupal 7.
             'drupal7' => [
