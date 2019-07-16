@@ -260,4 +260,54 @@ EOL;
             $this->assertNotContains($info_pattern, $contents);
         }
     }
+
+    /**
+     * Verifies a warning if rollback is attempted without .info file.
+     *
+     * @covers ::rollbackRewrite
+     */
+    public function testRollbackNoInfo()
+    {
+        // Generate test files.
+        $this->generateDirectories();
+
+        // Add the .info file that will be removed.
+        $files = [
+            $this->getDirectory() . '/module_missing_info',
+        ];
+
+        $package = $this->prophesize(PackageInterface::class);
+        $package->getType()->willReturn('drupal-module');
+        $package->getPrettyName()->willReturn('My Module');
+        $package = $package->reveal();
+        $packages = [$package];
+
+        $local_repository = $this->prophesize(WritableRepositoryInterface::class);
+        $local_repository->getPackages()->willReturn($packages);
+
+        $manager = $this->prophesize(RepositoryManager::class);
+        $manager->getLocalRepository()->willReturn($local_repository->reveal());
+
+        $installer = $this->prophesize(InstallerInterface::class);
+        $installer->getInstallPath($package)->willReturn($this->getDirectory() . '/module_missing_info');
+        $location_manager = $this->prophesize(InstallationManager::class);
+        $location_manager->getInstaller('drupal-module')->willReturn($installer->reveal());
+
+        $this->composer = $this->prophesize(Composer::class);
+        $this->composer->getRepositoryManager()->willReturn($manager->reveal());
+        $this->composer->getInstallationManager()->willReturn($location_manager->reveal());
+        $this->composer->getConfig()->willReturn(null);
+
+        // Ensure an error is logged.
+        $this->io->isVerbose()->willReturn(true);
+        $this->io->write('<info>No info files found for My Module</info>')->shouldBeCalledOnce();
+
+        $this->fixture->activate(
+            $this->composer->reveal(),
+            $this->io->reveal()
+        );
+
+        $event = $this->prophesize(Event::class);
+        $this->fixture->rollbackRewrite($event->reveal());
+    }
 }
