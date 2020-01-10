@@ -13,6 +13,11 @@ class Drupal implements WriterInterface
     const VERSION_EXISTS_PATTERN = '#version:.*[\d+].*#';
 
     /**
+     * Pattern to indicate a file has core_version_requirement.
+     */
+    const CORE_VERSION_REQUIREMENT_EXISTS_PATTERN = '#core_version_requirement:.*#';
+
+    /**
      * File paths to rewrite.
      *
      * @var string[]
@@ -36,7 +41,8 @@ class Drupal implements WriterInterface
             // Don't write to files that already contain version information.
             if (!$this->hasVersionInfo($info_file)) {
                 $file = fopen($info_file, 'a+');
-                fwrite($file, $this->formatInfo($version, $timestamp, $core, $project));
+              $coreToWrite = $this->hasCoreVersionRequirement($info_file) ? $core : NULL;
+              fwrite($file, $this->formatInfo($version, $timestamp, $coreToWrite, $project));
                 fclose($file);
             }
         }
@@ -93,4 +99,20 @@ class Drupal implements WriterInterface
         $contents = file_get_contents($file_path);
         return preg_match(static::VERSION_EXISTS_PATTERN, $contents);
     }
+
+    /**
+     * Determine if a given file contains core_version_requirement.
+     *
+     * @param string $file_path
+     *   Path to the info file.
+     *
+     * @return bool
+     *   Returns true if file already has core_version_requirement.
+     */
+    protected function hasCoreVersionRequirement($file_path)
+    {
+        $contents = file_get_contents($file_path);
+        return preg_match(static::CORE_VERSION_REQUIREMENT_EXISTS_PATTERN, $contents);
+    }
+
 }
