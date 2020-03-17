@@ -111,7 +111,7 @@ class DrupalInfoTest extends \PHPUnit_Framework_TestCase
             $this->getDirectory() . '/nested_module/modules/module_b/module_b.info.yml',
         ];
         $info = <<<EOL
-# Information added by drupal-composer/info-rewrite on 2009-02-13T23:31:30+00:00.
+# Information added by drupal-composer/info-rewrite; date of revision: 2009-02-13T23:31:30+00:00.
 version: 'foo-x+5'
 datestamp: 123
 EOL;
@@ -214,7 +214,7 @@ EOL;
         ];
         $info_pattern = <<<EOL
 
-# Information added by drupal-composer/info-rewrite on 2001-01-02.
+# Information added by drupal-composer/info-rewrite; date of revision: 2001-01-02.
 version: 'foo-version'
 timestamp: 1234
 EOL;

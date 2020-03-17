@@ -21,7 +21,7 @@ class Drupal7 extends Drupal
         $info = array();
         // Always start with EOL character.
         $info[] = '';
-        $info[] = "; Information added by drupal-composer/info-rewrite on $date.";
+        $info[] = "; Information added by drupal-composer/info-rewrite; date of revision: $date.";
         $info[] = "version = \"$version\"";
         if ($core) {
             $info[] = "core = \"$core\"";
