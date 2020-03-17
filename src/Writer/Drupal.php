@@ -47,7 +47,7 @@ class Drupal implements WriterInterface
      */
     public function rollback()
     {
-        $pattern = '# Information added by drupal-composer/info-rewrite on';
+        $pattern = '# Information added by drupal-composer/info-rewrite; date of revision:';
         foreach ($this->paths as $info_file) {
             $contents = file_get_contents($info_file);
             $parts = explode($pattern, $contents);
@@ -64,7 +64,7 @@ class Drupal implements WriterInterface
         $info = array();
         // Always start with EOL character.
         $info[] = '';
-        $info[] = "# Information added by drupal-composer/info-rewrite on $date.";
+        $info[] = "# Information added by drupal-composer/info-rewrite; date of revision: $date.";
         $info[] = "version: '$version'";
         if ($core) {
             $info[] = "core: '$core'";
