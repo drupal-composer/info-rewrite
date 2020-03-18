@@ -2,7 +2,7 @@
     "name": "drupal-composer/info-rewrite",
     "description": "Writes out version information to the .info.yml files for Drupal projects.",
     "type": "composer-plugin",
-    "license": "GPL-2.0+",
+    "license": "GPL-2.0-or-later",
     "authors": [
         {
             "name": "Jonathan Hedstrom",
