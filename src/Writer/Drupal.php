@@ -41,7 +41,7 @@ class Drupal implements WriterInterface
             // Don't write to files that already contain version information.
             if (!$this->hasVersionInfo($info_file)) {
                 $file = fopen($info_file, 'a+');
-                $coreToWrite = $this->hasCoreVersionRequirement($info_file) ? $core : null;
+                $coreToWrite = $this->hasCoreVersionRequirement($info_file) ? null : $core;
                 fwrite($file, $this->formatInfo($version, $timestamp, $coreToWrite, $project));
                 fclose($file);
             }
