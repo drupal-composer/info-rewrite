@@ -15,6 +15,7 @@ use Composer\Package\PackageInterface;
 use Composer\Repository\RepositoryManager;
 use Composer\Repository\WritableRepositoryInterface;
 use Composer\Script\Event;
+use Composer\Script\ScriptEvents;
 use DrupalComposer\Composer\DrupalInfo;
 
 /**
@@ -62,6 +63,8 @@ class DrupalInfoTest extends \PHPUnit_Framework_TestCase
     public function testGetSubscribedEvents()
     {
         $events = DrupalInfo::getSubscribedEvents();
+        $this->assertArrayHasKey(ScriptEvents::PRE_INSTALL_CMD, $events);
+        $this->assertArrayHasKey(ScriptEvents::PRE_UPDATE_CMD, $events);
         $this->assertArrayHasKey(PackageEvents::POST_PACKAGE_INSTALL, $events);
         $this->assertArrayHasKey(PackageEvents::POST_PACKAGE_UPDATE, $events);
     }
