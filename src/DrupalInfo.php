@@ -101,6 +101,9 @@ class DrupalInfo implements PluginInterface, EventSubscriberInterface
 
     /**
      * Remove the info file rewriting.
+     *
+     * @param \Composer\Installer\PackageEvent $event
+     *   The package event.
      */
     public function rollbackRewrite(Event $event)
     {
