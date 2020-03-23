@@ -9,7 +9,6 @@ use Composer\DependencyResolver\Operation\UpdateOperation;
 use Composer\Installer\InstallationManager;
 use Composer\Installer\InstallerInterface;
 use Composer\Installer\PackageEvent;
-use Composer\Installer\PackageEvents;
 use Composer\IO\IOInterface;
 use Composer\Package\PackageInterface;
 use Composer\Repository\RepositoryManager;
@@ -65,8 +64,8 @@ class DrupalInfoTest extends \PHPUnit_Framework_TestCase
         $events = DrupalInfo::getSubscribedEvents();
         $this->assertArrayHasKey(ScriptEvents::PRE_INSTALL_CMD, $events);
         $this->assertArrayHasKey(ScriptEvents::PRE_UPDATE_CMD, $events);
-        $this->assertArrayHasKey(PackageEvents::POST_PACKAGE_INSTALL, $events);
-        $this->assertArrayHasKey(PackageEvents::POST_PACKAGE_UPDATE, $events);
+        $this->assertArrayHasKey(ScriptEvents::POST_INSTALL_CMD, $events);
+        $this->assertArrayHasKey(ScriptEvents::POST_UPDATE_CMD, $events);
     }
 
     /**

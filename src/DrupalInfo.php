@@ -71,8 +71,8 @@ class DrupalInfo implements PluginInterface, EventSubscriberInterface
         $events[ScriptEvents::PRE_UPDATE_CMD] = 'rollbackRewrite';
 
         // Events for performing the re-writing of info files.
-        $events[PackageEvents::POST_PACKAGE_INSTALL] = ['writeInfoFiles', 50];
-        $events[PackageEvents::POST_PACKAGE_UPDATE] = ['writeInfoFiles', 50];
+        $events[ScriptEvents::POST_INSTALL_CMD] = 'writeAllInfoFiles';
+        $events[ScriptEvents::POST_UPDATE_CMD] = 'writeAllInfoFiles';
 
         return $events;
     }
@@ -120,6 +120,30 @@ class DrupalInfo implements PluginInterface, EventSubscriberInterface
             }
 
             $this->doRollback($package);
+        }
+    }
+
+    /**
+     * Writes out version information to .info files.
+     *
+     * @param \Composer\Installer\PackageEvent $event
+     *   The package event.
+     */
+    public function writeAllInfoFiles(Event $event)
+    {
+        $packages = $this->composer->getRepositoryManager()->getLocalRepository()->getPackages();
+        foreach ($packages as $package) {
+            if (!$this->processPackage($package)) {
+                if ($this->io->isVerbose()) {
+                    $this->io->write(
+                        '<info>Not writing info files for ' . $package->getPrettyName() . ' as it is of type '
+                        . $package->getType() . '</info>'
+                    );
+                }
+                continue;
+            }
+
+            $this->doWriteInfoFiles($package);
         }
     }
 
