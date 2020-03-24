@@ -56,7 +56,7 @@ class Drupal implements WriterInterface
         $pattern = "\n# Information added by drupal-composer/info-rewrite; date of revision:";
         foreach ($this->paths as $info_file) {
             $contents = file_get_contents($info_file);
-            $parts = explode($pattern, $contents);
+            $parts = explode($pattern, $contents, 2);
             file_put_contents($info_file, $parts[0]);
         }
     }
