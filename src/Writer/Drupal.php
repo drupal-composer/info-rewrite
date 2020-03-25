@@ -40,7 +40,7 @@ class Drupal implements WriterInterface
         foreach ($this->paths as $info_file) {
             // Don't write to files that already contain version information.
             if (!$this->hasVersionInfo($info_file)) {
-                $file = fopen($info_file, 'a+');
+                $file = fopen($info_file, 'a');
                 $coreToWrite = $this->hasCoreVersionRequirement($info_file) ? null : $core;
                 fwrite($file, $this->formatInfo($version, $timestamp, $coreToWrite, $project));
                 fclose($file);
