@@ -221,7 +221,7 @@ version: 'foo-version'
 timestamp: 1234
 EOL;
         foreach ($files as $file) {
-            $handle = fopen($file, 'a+');
+            $handle = fopen($file, 'a');
             fwrite($handle, $info_pattern);
             fclose($handle);
             $this->assertContains($info_pattern, file_get_contents($file));
