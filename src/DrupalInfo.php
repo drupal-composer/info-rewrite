@@ -163,7 +163,7 @@ class DrupalInfo implements PluginInterface, EventSubscriberInterface
             );
         } elseif ($this->io->isVerbose()) {
             $this->io->write(
-                '<info>No info files found for ' .$package->getPrettyName() . '</info>'
+                '<info>No info files found for ' . $package->getPrettyName() . '</info>'
             );
         }
     }
@@ -178,7 +178,7 @@ class DrupalInfo implements PluginInterface, EventSubscriberInterface
             $writer->rollback();
         } elseif ($this->io->isVerbose()) {
             $this->io->write(
-                '<info>No info files found for ' .$package->getPrettyName() . '</info>'
+                '<info>No info files found for ' . $package->getPrettyName() . '</info>'
             );
         }
     }
@@ -200,7 +200,7 @@ class DrupalInfo implements PluginInterface, EventSubscriberInterface
     /**
      * Find specific version info for a given package.
      *
-     * @param  PackageInterface $package
+     * @param PackageInterface $package
      * @return string
      */
     protected function findVersion(PackageInterface $package)
@@ -219,7 +219,7 @@ class DrupalInfo implements PluginInterface, EventSubscriberInterface
     /**
      * Find a timestamp that the release is from in the package.
      *
-     * @param  PackageInterface $package
+     * @param PackageInterface $package
      * @return string
      *   Unix timestamp.
      */
@@ -283,7 +283,7 @@ class DrupalInfo implements PluginInterface, EventSubscriberInterface
     /**
      * Determine if this package should be processed.
      *
-     * @param  PackageInterface $package
+     * @param PackageInterface $package
      * @return bool
      */
     protected function processPackage(PackageInterface $package)
@@ -294,7 +294,7 @@ class DrupalInfo implements PluginInterface, EventSubscriberInterface
     /**
      * Gather the package from the given operation.
      *
-     * @param  OperationInterface $operation
+     * @param OperationInterface $operation
      * @return \Composer\Package\PackageInterface
      * @throws \Exception
      */
@@ -313,4 +313,5 @@ class DrupalInfo implements PluginInterface, EventSubscriberInterface
         }
         return $package;
     }
+
 }
