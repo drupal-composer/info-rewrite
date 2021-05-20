@@ -16,13 +16,16 @@ use Composer\Repository\WritableRepositoryInterface;
 use Composer\Script\Event;
 use Composer\Script\ScriptEvents;
 use DrupalComposer\Composer\DrupalInfo;
+use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 /**
  * @coversDefaultClass \DrupalComposer\Composer\DrupalInfo
  */
-class DrupalInfoTest extends \PHPUnit_Framework_TestCase
+class DrupalInfoTest extends TestCase
 {
     use InfoFileTrait;
+    use ProphecyTrait;
 
     /**
      * @var Composer
@@ -42,7 +45,7 @@ class DrupalInfoTest extends \PHPUnit_Framework_TestCase
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUp():void
     {
         parent::setUp();
 
@@ -120,27 +123,13 @@ EOL;
 
         foreach ($files as $file) {
             $this->assertFileExists($file);
-            $this->assertContains($info, file_get_contents($file));
+            $this->assertStringContainsString($info, file_get_contents($file));
         }
 
         // Verify that module with existing version information is not updated.
         $file = $this->getDirectory() . '/module_with_version/module_with_version.info.yml';
         $this->assertFileExists($file);
-        $this->assertNotContains($info, file_get_contents($file));
-    }
-
-    /**
-     * @covers ::writeInfoFiles
-     */
-    public function testUpdateOperationWriteInfoFiles()
-    {
-        $event = $this->prophesize(PackageEvent::class);
-        $operation = $this->prophesize(UpdateOperation::class);
-        $package = $this->prophesize(PackageInterface::class);
-        $package->getType()->willReturn('drupal-fo');
-        $operation->getTargetPackage()->willReturn($package->reveal());
-        $event->getOperation()->willReturn($operation->reveal());
-        $this->fixture->writeInfoFiles($event->reveal());
+        $this->assertStringNotContainsString($info, file_get_contents($file));
     }
 
     /**
@@ -187,20 +176,6 @@ EOL;
     }
 
     /**
-     * @covers ::writeInfoFiles
-     */
-    public function testIgnoredPackageType()
-    {
-        $event = $this->prophesize(PackageEvent::class);
-        $operation = $this->prophesize(InstallOperation::class);
-        $package = $this->prophesize(PackageInterface::class);
-        $package->getType()->willReturn('drupal-fo');
-        $operation->getPackage()->willReturn($package->reveal());
-        $event->getOperation()->willReturn($operation->reveal());
-        $this->fixture->writeInfoFiles($event->reveal());
-    }
-
-    /**
      * @covers ::rollbackRewrite
      */
     public function testRollbackRewrite()
@@ -224,7 +199,7 @@ EOL;
             $handle = fopen($file, 'a');
             fwrite($handle, $info_pattern);
             fclose($handle);
-            $this->assertContains($info_pattern, file_get_contents($file));
+            $this->assertStringContainsString($info_pattern, file_get_contents($file));
         }
 
         $package = $this->prophesize(PackageInterface::class);
@@ -259,7 +234,7 @@ EOL;
         // Verify that 3 .info files are updated.
         foreach ($files as $file) {
             $contents = file_get_contents($file);
-            $this->assertNotContains($info_pattern, $contents);
+            $this->assertStringNotContainsString($info_pattern, $contents);
         }
     }
 
