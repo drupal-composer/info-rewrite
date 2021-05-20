@@ -64,6 +64,22 @@ class DrupalInfo implements PluginInterface, EventSubscriberInterface
     /**
      * {@inheritdoc}
      */
+    public function deactivate(Composer $composer, IOInterface $io)
+    {
+
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function uninstall(Composer $composer, IOInterface $io)
+    {
+
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public static function getSubscribedEvents()
     {
         // Pre-install/update events for rolling back the rewrite to avoid prompts for changed files.

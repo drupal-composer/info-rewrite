@@ -10,7 +10,7 @@ class Drupal implements WriterInterface
     /**
      * Pattern to indicate a file already has version info.
      */
-    const VERSION_EXISTS_PATTERN = '#version:.*[\d+].*#';
+    const VERSION_EXISTS_PATTERN = '#(version:.*[\d+].*|version: VERSION)#';
 
     /**
      * Pattern to indicate a file has core_version_requirement.
