@@ -17,9 +17,9 @@ interface WriterInterface
     /**
      * Rewrites the .info files with the provided version and timestamp.
      *
-     * @param  string $version
+     * @param string $version
      *   Version information to write out.
-     * @param  string $timestamp
+     * @param string $timestamp
      * @return
      */
     public function rewrite($version, $timestamp, $core = null, $project = null);

@@ -26,10 +26,14 @@
         "squizlabs/php_codesniffer": "~2.0"
     },
     "autoload": {
-        "psr-4": {"DrupalComposer\\Composer\\": "src"}
+        "psr-4": {
+            "DrupalComposer\\Composer\\": "src"
+        }
     },
     "autoload-dev": {
-        "psr-4": {"DrupalComposer\\Composer\\Tests\\": "tests"}
+        "psr-4": {
+            "DrupalComposer\\Composer\\Tests\\": "tests"
+        }
     },
     "scripts": {
         "test:unit": "phpunit --log-junit=reports/unitreport.xml --coverage-text --coverage-html=reports/coverage --coverage-clover=reports/coverage.xml",
