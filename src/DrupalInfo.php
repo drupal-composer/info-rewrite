@@ -273,7 +273,11 @@ class DrupalInfo implements PluginInterface, EventSubscriberInterface
         // Attempt to determine from version number.
         $version = $this->findVersion($package);
         if (preg_match('/^(\d+\.x)-/', $version, $backref)) {
-            return $backref[1];
+            $core = $backref[1];
+            // Many 8.x packages are compatible with D9 also. D9 info file should not include the core property.
+            if ($core != '8.x') {
+                return $core;
+            }
         }
     }
 
